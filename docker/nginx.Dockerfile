@@ -1,11 +1,11 @@
 FROM oven/bun:1.2-alpine AS base
 WORKDIR /app
 FROM base AS deps
-COPY package.json bun.lock ./
-RUN bun install --frozen-lockfile
+COPY expo/package.json expo/bun.lock ./
+RUN bun install
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY expo/ .
 ARG API_BASE_URL=https://app.musorka.su
 ENV API_BASE_URL=${API_BASE_URL}
 RUN CI=1 EXPO_NO_TELEMETRY=1 sh -c './node_modules/.bin/expo export --platform web > /tmp/expo-export.log 2>&1 & \

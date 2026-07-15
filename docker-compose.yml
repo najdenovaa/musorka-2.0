@@ -1,8 +1,8 @@
 services:
   backend:
     build:
-      context: .
-      dockerfile: docker/backend.Dockerfile
+      context: ./expo
+      dockerfile: ../docker/backend.Dockerfile
     container_name: bp-backend
     restart: unless-stopped
     network_mode: host

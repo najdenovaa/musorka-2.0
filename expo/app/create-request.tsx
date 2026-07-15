@@ -17,6 +17,7 @@ import {
 } from 'react-native';
 
 import { Image } from '@/components/MImage';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
@@ -292,6 +293,7 @@ export default function CreateRequestScreen() {
   }, [selectedHour, selectedMinute]);
 
   const floatingHeaderHeight = useFloatingHeaderHeight();
+  const insets = useSafeAreaInsets();
 
   const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
   useEffect(() => {
@@ -547,7 +549,7 @@ export default function CreateRequestScreen() {
         title="Добавить фото к заявке"
       />
 
-      <View style={[styles.submitButtonWrap, Platform.OS === 'android' && keyboardHeight > 0 ? { paddingBottom: 16 + keyboardHeight } : null]}>
+      <View style={[styles.submitButtonWrap, { paddingBottom: 16 + insets.bottom + (Platform.OS === 'android' && keyboardHeight > 0 ? keyboardHeight : 0) }]}>
         <TouchableOpacity
           style={[styles.submitButton, isSubmitting && styles.submitButtonDisabled]}
           onPress={handleSubmit}

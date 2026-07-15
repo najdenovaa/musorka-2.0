@@ -337,6 +337,18 @@ export async function initDatabase() {
       console.log("[Hotfix] Test executor seed skipped:", e.message);
     }
 
+    await safeAddColumn("service_categories", "icon", "VARCHAR(64)");
+    await safeAddColumn("service_categories", "color", "VARCHAR(16)");
+    await safeAddColumn("service_categories", "bg_color", "VARCHAR(16)");
+    await safeAddColumn("service_categories", "description", "TEXT");
+    await safeAddColumn("service_categories", "is_active", "BOOLEAN DEFAULT TRUE");
+    await safeAddColumn("service_categories", "sort_order", "INT DEFAULT 0");
+    try {
+      await seedCategories();
+    } catch (e: any) {
+      console.log("[Hotfix] Category seed skipped:", e.message);
+    }
+
     return { success: true, skipped: true };
   }
 
