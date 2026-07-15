@@ -1,0 +1,7 @@
+
+ios/
+android/
+.env
+core
+node_modules
+.expo

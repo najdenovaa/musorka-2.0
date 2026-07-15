@@ -1,0 +1,123 @@
+{
+  "expo": {
+    "name": "Мусорка",
+    "slug": "musorka",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "musorka",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": false,
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#071A10"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "app.rork.bytovoy-pomoshnik",
+      "buildNumber": "1",
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Приложение использует доступ к фотографиям, чтобы вы могли прикреплять снимки из галереи при оформлении заявки (например, фото объекта работ) и при подтверждении выполненной заявки (например, фото результата работы), а также устанавливать фото профиля.",
+        "NSCameraUsageDescription": "Приложение использует камеру, чтобы вы могли сфотографировать объект при оформлении заявки (например, снимок места проведения работ во дворе) и приложить фото результата к выполненной заявке (например, снимок убранной территории), а также сделать фото для аватара профиля.",
+        "NSMicrophoneUsageDescription": "Приложение использует микрофон, чтобы вы могли записывать голосовые сообщения в чате с поддержкой и исполнителем заявки (например, голосом уточнить детали оформления или выполнения заявки).",
+        "NSFaceIDUsageDescription": "Приложение использует Face ID для быстрого и безопасного входа в аккаунт",
+        "UIBackgroundModes": [
+          "remote-notification"
+        ],
+        "LSApplicationQueriesSchemes": [
+          "yandexnavi",
+          "yandexmaps",
+          "yandextaxi",
+          "dgis"
+        ]
+      }
+    },
+    "android": {
+      "package": "su.musorka.app",
+      "versionCode": 1,
+      "googleServicesFile": "./google-services.json",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#071A10"
+      },
+      "permissions": [
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_MEDIA_IMAGES",
+        "READ_MEDIA_VIDEO",
+        "READ_MEDIA_AUDIO",
+        "CAMERA",
+        "RECORD_AUDIO",
+        "MODIFY_AUDIO_SETTINGS",
+        "VIBRATE",
+        "RECEIVE_BOOT_COMPLETED",
+        "SCHEDULE_EXACT_ALARM",
+        "POST_NOTIFICATIONS",
+        "WAKE_LOCK",
+        "INTERNET"
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "favicon": "./assets/images/icon.png"
+    },
+    "plugins": [
+      [
+        "expo-router",
+        {
+          "origin": "https://app.musorka.su/"
+        }
+      ],
+      "expo-font",
+      "expo-web-browser",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Разрешите доступ к фотографиям для выбора изображений в заявках и профиле",
+          "cameraPermission": "Разрешите доступ к камере, чтобы сделать снимок для заявки или сообщения",
+          "microphonePermission": "Разрешите доступ к микрофону для голосовых сообщений"
+        }
+      ],
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Приложению нужен доступ к микрофону для записи голосовых сообщений в чате."
+        }
+      ],
+      [
+        "./plugins/withMinimumDeploymentTarget",
+        {
+          "iosVersion": "13.4"
+        }
+      ],
+      "./plugins/withExcludeReactNativeMaps",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/icon.png",
+          "color": "#071A10",
+          "sounds": [],
+          "androidMode": "default",
+          "androidCollapsedTitle": "Мусорка"
+        }
+      ]
+    ],
+    "extra": {
+      "apiBaseUrl": "https://app.musorka.su",
+      "allowedApiHosts": [
+        "app.musorka.su"
+      ],
+      "router": {
+        "origin": "https://app.musorka.su/"
+      },
+      "eas": {
+        "projectId": "dfeba6af-76ad-4010-981e-4f403509255b"
+      }
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "88073343743",
+    "project_id": "musorka-93905",
+    "storage_bucket": "musorka-93905.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88073343743:android:9715a9d09274972b5732ca",
+        "android_client_info": {
+          "package_name": "su.musorka.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGzAQUpBEIjlHN6y8-9bDqwkhrDca2ZTk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,47 @@
+{
+  "cli": {
+    "version": ">= 10.0.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "production": {
+      "cache": {
+        "disabled": true
+      },
+      "env": {
+        "API_BASE_URL": "https://app.musorka.su",
+        "NPM_CONFIG_LEGACY_PEER_DEPS": "true",
+        "EAS_BUILD_CLEAN": "1"
+      },
+      "android": {
+        "buildType": "app-bundle"
+      }
+    },
+    "preview": {
+      "cache": {
+        "disabled": true
+      },
+      "distribution": "internal",
+      "env": {
+        "API_BASE_URL": "https://app.musorka.su",
+        "NPM_CONFIG_LEGACY_PEER_DEPS": "true",
+        "EAS_BUILD_CLEAN": "1"
+      },
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": false
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleId": "najdenovaa@gmail.com",
+        "appleTeamId": "4JVMG89G74",
+        "ascAppId": "6762083275"
+      }
+    }
+  }
+}

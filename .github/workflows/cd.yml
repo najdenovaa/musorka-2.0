@@ -1,0 +1,98 @@
+name: CD - Deploy Backend
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-backend
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to server via SSH
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: production
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add server to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p ${{ secrets.SSH_PORT || '22' }} -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy over SSH
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          REPO_URL: ${{ secrets.REPO_URL }}
+          DEPLOY_BRANCH: ${{ secrets.DEPLOY_BRANCH || 'main' }}
+        run: |
+          ssh -p "$SSH_PORT" "$SSH_USER@$SSH_HOST" bash -s <<EOF
+            set -euo pipefail
+
+            if [ ! -d "$DEPLOY_PATH/.git" ]; then
+              echo "==> Cloning fresh repo to $DEPLOY_PATH"
+              mkdir -p "$DEPLOY_PATH"
+              git clone "$REPO_URL" "$DEPLOY_PATH"
+            fi
+
+            cd "$DEPLOY_PATH"
+            echo "==> Fetching latest code"
+            git fetch --all --prune
+            git reset --hard "origin/$DEPLOY_BRANCH"
+
+            echo "==> Rebuilding containers"
+            docker compose --env-file .env build
+            docker compose --env-file .env up -d
+
+            echo "==> Reloading nginx (config is bind-mounted, container is not auto-recreated)"
+            if docker compose --env-file .env exec -T nginx nginx -t; then
+              if ! docker compose --env-file .env exec -T nginx nginx -s reload; then
+                echo "nginx reload failed, restarting container"
+                docker compose --env-file .env restart nginx
+              fi
+            else
+              echo "nginx config test failed, forcing restart to surface the error"
+              docker compose --env-file .env restart nginx || true
+              docker compose --env-file .env logs --tail=50 nginx || true
+              exit 1
+            fi
+
+            echo "==> Pruning old images"
+            docker image prune -f || true
+
+            echo "==> Current status"
+            docker compose --env-file .env ps
+          EOF
+
+      - name: Health check
+        env:
+          HEALTH_URL: ${{ secrets.HEALTH_URL }}
+        run: |
+          if [ -z "$HEALTH_URL" ]; then
+            echo "HEALTH_URL not set, skipping health check"
+            exit 0
+          fi
+          echo "Checking $HEALTH_URL ..."
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            if curl -fsS --max-time 5 "$HEALTH_URL" > /dev/null; then
+              echo "Healthy"
+              exit 0
+            fi
+            echo "Attempt $i failed, retrying in 5s..."
+            sleep 5
+          done
+          echo "Health check failed"
+          exit 1

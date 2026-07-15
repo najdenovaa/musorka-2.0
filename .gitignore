@@ -1,0 +1,77 @@
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+ios/
+android/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
+.vercel
+
+.rork
+
+# Local nested clone (same remote); do not commit as subtree
+rork----/
+
+# SSL certificates (avoid conflicts with production)
+ssl/
+*.pem
+*.crt
+*.cer
+*.csr
+*.der
+*.p7b
+*.p7c
+*.pfx
+fullchain*.pem
+privkey*.pem
+cert*.pem
+chain*.pem
+
+# Let's Encrypt state (paths, keys)
+ssl/certbot/
+
+# Deploy folder contents (server-specific, do not commit)
+deploy/*
+!deploy/.gitkeep
+
+.env
+rork-eslint.config.js
+core
+node_modules
+.expo
+
+# Локальные дампы БД (pg_dump перед опасными миграциями).
+# Содержат персональные данные, в репо не кладём.
+backups/
+*.dump
